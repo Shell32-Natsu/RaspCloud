@@ -5,20 +5,29 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 #define CSTRLEN 1024     //The common string length in this file.
 #define MSTRLEN 10240    //The maximum string length in this file.
+/*Ansi C don't have type bool, so we define it*/
+#define true 1
+#define false 0
+#define bool int
 
 char cur_path[MSTRLEN]="/";	 //Current path in software.
 
-void disp_file(const char *directory,char *file_list)
+void list_file(const char *directory,char *file_list)
 {
 	/*Display the file in directory*/
-    DIR *dir = opendir(directory);
+    char ctmp[MSTRLEN]={0};
+    strcat(ctmp,cur_path);
+    strcat(ctmp,name);
+
+    DIR *dir = opendir(ctmp);
     
     if(dir == NULL)
     {
-        fprintf(stderr,"Error:Can not open directory %s\n",directory);
+        fprintf(stderr,"Error:Can not open directory %s.\n",directory);
         return;
     }
     
@@ -41,13 +50,63 @@ void disp_file(const char *directory,char *file_list)
 bool new_file(const char *name)
 {
 	/*Create a new file*/
-	
+    char tmp[MSTRLEN]={0};
+    strcat(tmp,cur_path);
+    strcat(tmp,name);
+    if(creat(tmp,S_IWUSR|S_IRUSR) == -1)
+    {
+        fprintf(stderr,"Error:Can not create file %s.\n",name);
+        return false;
+    }
+    else
+        return true;
 }
+
+bool new_dir(const char *name)
+{
+    /*Create a new directory*/
+
+    char tmp[MSTRLEN]={0};
+    strcat(tmp,cur_path);
+    strcat(tmp,name);
+    if(mkdir(tmp,S_IWUSR|S_IRUSR|S_IXUSR) == -1)
+    {
+        fprintf(stderr,"Error:Can not create file %s.\n",name);
+        return false;
+    }
+    else
+        return true;
+}
+
+bool enter_dir(const char *name)
+{
+    /*Enter a directory*/
+    char tmp[MSTRLEN]={0};
+    strcat(tmp,cur_path);
+    strcat(tmp,name);
+
+    if(opendir(tmp) == NULL)
+    {
+        fprintf(stderr,"Error:Can not enter directory %s.\n",name);
+        return false;
+    }
+    else
+    {
+        strcat(cur_path,name);
+        strcat(cur_path,"/");
+        return true;
+    }
+}
+
 int main(void)
 {
-    char flist[MSTRLEN]={0},dir[CSTRLEN];
-    scanf("%s",dir);
-    disp_file(dir,flist);
-    puts(flist);
+    strcpy(cur_path,"/home/xiadong/");
+    if(enter_dir("test"))
+    {
+        puts("yes");
+        puts(cur_path);
+    }
+    else
+        puts("no");
     return 0;
 }
