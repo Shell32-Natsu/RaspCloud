@@ -65,7 +65,7 @@ bool new_dir(const char *name)
     strcat(tmp,name);
     if(mkdir(tmp,S_IWUSR|S_IRUSR|S_IXUSR) == -1)
     {
-        fprintf(stderr,"NEWDIR:Can not create directory %s.\n",name);
+        fprintf(stderr,"NEWDIR:Can not create file %s.\n",name);
         return false;
     }
     else
@@ -140,7 +140,7 @@ bool del_dir(const char *name)
     strcat(tmp,name);
     if( remove( tmp ) == -1 )
     {
-        fprintf(stderr,"DELDIR:Can not delete directory, please make sure you have authority\n");
+        fprintf(stderr,"DELFILE:Can not delete directory, please make sure you have authority\n");
         return false;
     } 
     else
