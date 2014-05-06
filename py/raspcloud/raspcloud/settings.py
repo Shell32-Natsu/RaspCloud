@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 """
-Django settings for raspcloud project.
+Django settings for mysite project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -17,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'rwl4a^)pa*g#wicnj6_0@e2$u!*_$c4&fdy!7$gi&u1s5hl(i#'
+SECRET_KEY = 'u&i4$%d8tt#waw#-q*4t==im+5yy2&(79nz@l34tel0^7-3!p+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -65,7 +66,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-CN'
 
 TIME_ZONE = 'UTC'
 
@@ -80,3 +81,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates".
+    # Always use forward slashes, even on Windows.
+    'E:/GitHub/RaspCloud/py/raspcloud/template',
+)
