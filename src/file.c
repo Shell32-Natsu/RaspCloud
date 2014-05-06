@@ -1,3 +1,12 @@
+/*File name:file.c
+ *
+ *Author : Xia Dong
+ *
+ *Copyright all reserved 2013-2014
+ *
+ *The functions about file management in RaspCloud.
+ */
+
 #include <stdio.h>
 #include <string.h>
 /*POSIX header*/
