@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 /*POSIX header*/
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -19,9 +20,9 @@
 #include "../include/marco.h"
 #include "../include/file.h"
 
-char cur_path[MSTRLEN]="/cloud/";	 //Current path in software.
+//char cur_path[MSTRLEN]="/cloud/";	 //Current path in software.交给Python类来维护
 
-void list_file(char *file_list)
+void list_file(char *file_list, char *cur_path)
 {
 	/*Display the file in directory*/
     strcpy(file_list,"");
@@ -50,7 +51,7 @@ void list_file(char *file_list)
     closedir(dir);
 }
 
-bool new_file(const char *name)
+bool new_file(const char *name, char *cur_path)
 {
 	/*Create a new file*/
     char tmp[MSTRLEN]={0};
@@ -65,7 +66,7 @@ bool new_file(const char *name)
         return true;
 }
 
-bool new_dir(const char *name)
+bool new_dir(const char *name, char *cur_path)
 {
     /*Create a new directory*/
 
@@ -81,7 +82,7 @@ bool new_dir(const char *name)
         return true;
 }
 
-bool enter_dir(const char *name)
+bool enter_dir(const char *name, char *cur_path)
 {
     /*Enter a directory*/
     char tmp[MSTRLEN]={0};
@@ -101,7 +102,7 @@ bool enter_dir(const char *name)
     }
 }
 
-bool exit_dir(void)
+bool exit_dir(char *cur_path)
 {
     /*Exit to parent directory*/
     if(strlen(cur_path) <= strlen("/cloud/"))
@@ -124,7 +125,7 @@ bool exit_dir(void)
     }
 }
 
-bool del_file(const char *name)
+bool del_file(const char *name, char *cur_path)
 {
    /*Delete a file,*/
     char tmp[MSTRLEN] = {0};
@@ -141,7 +142,7 @@ bool del_file(const char *name)
     }
 }
 
-bool del_dir(const char *name)
+bool del_dir(const char *name, char *cur_path)
 {
     /*Delete a directory,*/
     char tmp[MSTRLEN] = {0};
@@ -159,16 +160,36 @@ bool del_dir(const char *name)
 
 }
 
-void get_dir(char *target)
+void get_dir(char *target, char *cur_path)
 {
     /*Get current directory path*/
     strcpy(target,cur_path);
 }
 
-void set_dir(char *src)
+void set_dir(char *src, char *cur_path)
 {
     /*Set current directory path*/
     strcpy(cur_path,src);
 }
 
+long long get_file_size(char *name, char *cur_path)
+{
+    /*Get the size of file*/
+    struct stat buf;
+    char tmp[MSTRLEN] = {0};
+    strcat(tmp,cur_path);
+    strcat(tmp,name);
+    stat(tmp,&buf);
+    return buf.st_size;
+}
 
+time_t get_file_change_time(char *name, char *cur_path)
+{
+    /*Get file last changed time*/
+    struct stat buf;
+    char tmp[MSTRLEN] = {0};
+    strcat(tmp,cur_path);
+    strcat(tmp,name);
+    stat(tmp,&buf);
+    return buf.st_ctime;
+}
